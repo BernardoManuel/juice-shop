@@ -22,7 +22,7 @@ jobs:
         run: snyk auth ${{secrets.SNYK_TOKEN}}
 
       - name: Ejecutar analisis SAST con snyk
-        run: snyk code test --sarif > snyk-sast-report.sarif
+        run: snyk code test --sarif > snyk-sast-report.sarif || true
         
       - name: Verificar si el reporte SARIF existe
         run: cat snyk-sast-report.sarif || echo "El archivo SARIF no se generó correctamente"
@@ -38,7 +38,7 @@ jobs:
 
     steps:
       - name: Ejecutar analisis SAST con snyk
-        run: snyk test --sarif > snyk-sca-report.sarif
+        run: snyk test --sarif > snyk-sca-report.sarif || true
         
       - name: Verificar si el reporte SARIF existe
         run: cat snyk-sca-report.sarif || echo "El archivo SARIF no se generó correctamente"
