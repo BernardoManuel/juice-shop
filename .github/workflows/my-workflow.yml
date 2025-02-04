@@ -9,8 +9,8 @@ on:
       - master
 
 jobs:
-  snyk-test:
-    name: Ejecutar Snyk Test
+  snyk-SAST-test:
+    name: Ejecutar Snyk SAST Test
     runs-on: self-hosted
 
     steps:
@@ -22,7 +22,7 @@ jobs:
         run: snyk auth ${{secrets.SNYK_TOKEN}}
 
       - name: Ejecutar analisis SAST con snyk
-        run: snyk code test --sarif || true > snyk-sast-report.sarif
+        run: snyk code test --sarif > snyk-sast-report.sarif
         
       - name: Verificar si el reporte SARIF existe
         run: cat snyk-sast-report.sarif || echo "El archivo SARIF no se generó correctamente"
@@ -31,3 +31,19 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with: 
           sarif_file: snyk-sast-report.sarif
+
+  snyk-SCA-test:
+    name: Ejecutar Snyk SCA Test
+    runs-on: self-hosted
+
+    steps:
+      - name: Ejecutar analisis SAST con snyk
+        run: snyk test --sarif > snyk-sca-report.sarif
+        
+      - name: Verificar si el reporte SARIF existe
+        run: cat snyk-sca-report.sarif || echo "El archivo SARIF no se generó correctamente"
+
+      - name: Subir resultados a GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with: 
+          sarif_file: snyk-sca-report.sarif
