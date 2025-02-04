@@ -11,7 +11,7 @@ on:
 jobs:
   snyk-test:
     name: Ejecutar Snyk Test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
      # - name: Checkout code
